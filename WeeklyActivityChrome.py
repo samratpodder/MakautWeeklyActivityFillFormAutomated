@@ -16,7 +16,7 @@ def isnan(value):
         return False
 
 
-source_file_path = "E:\\Python\\MakautWeeklyActivityFillFormAutomated\\BSH Online academic activity_Student Copy.csv"
+source_file_path = "E:\\Python\\BSH Online academic activity_Student Copy.csv"
 source_df = pd.read_csv(source_file_path)
 source_df = source_df.loc[0:433,
             'Faculty Name':'Mention Google Class Code/Link/Meeting ID                          (If applicable)']
@@ -25,7 +25,7 @@ cse_df = source_df[source_df["Stream-Sec"].str.find("CSE") >= 0]
 # print(cse_df.shape)
 # print(cse_df)
 cse_df.to_csv("Filtered CSE Classes.csv")
-browser = webdriver.Chrome(executable_path=r'E:\\Python\\MakautWeeklyActivityFillFormAutomated\\chromedriver.exe')
+browser = webdriver.Chrome(executable_path=r'E:\\Python\\chromedriver.exe')
 browser.set_page_load_timeout(240)
 browser.get('https://makaut1.ucanapply.com/smartexam/public/student/week-report-activity/create')
 # student=browser.find_element_by_name('STUDENT')
@@ -43,7 +43,11 @@ takenby = ""
 platform = ""
 date = ""
 link = ""
+i = int(input("Previous Entries : "))
 for index, row in cse_df.iterrows():
+    if not i == 0:
+        i -= 1
+        continue
     browser.get("https://makaut1.ucanapply.com/smartexam/public/student/week-report-activity/create")
     sleep(3)
     weekobj = browser.find_element_by_id("week")
@@ -68,7 +72,7 @@ for index, row in cse_df.iterrows():
     sleep(3)
     # week = datetime.strptime(row[2] , '%mm %dd %yyyy')
 
-    date = row[2] + "-" + row[3]
+    date = str(row[2]) + "-" + str(row[3])
     topic = row[7]
     duration = row[3]
     takenby = row[0]
@@ -79,26 +83,31 @@ for index, row in cse_df.iterrows():
     # assignmentR = row[13]
     # assignmentS = row[14]
     # testatt = row[15]
-    print("Date/Time = " + date)
-    print("Topic Covered= " + topic)
-    print("Course Code = " + code)
-    print("Time= " + duration)
-    print("Taken by " + takenby)
-    print("Platform Used = " + platform)
+    print("Date/Time = " + str(date))
+    print("Topic Covered= " + str(topic))
+    print("Course Code = " + str(code))
+    print("Time= " + str(duration))
+    print("Taken by " + str(takenby))
+    print("Platform Used = " + str(platform))
     print("Recorded Lecture Link = ", end="")
     if not link == "":
         print(link)
     else:
         print("Not Available")
-
-    durationform.send_keys(duration)
+    if not isnan(duration):
+        durationform.send_keys(duration)
+    else:
+        durationform.send_keys("NA")
     interraction.send_keys('NA')
     assignmentrec.send_keys('NA')
     assignmentsub.send_keys("NA")
     test.send_keys("NA")
     self.send_keys("NA")
     remark.send_keys("NA")
-    topicfld.send_keys(topic)
+    if not isnan(topic):
+        topicfld.send_keys(topic)
+    else:
+        topicfld.send_keys("NA")
     if not isnan(link):
         # WebDriverWait(browser, 20).until(
         # EC.element_to_be_clickable((By.CLASS_NAME, "record_lecture_upload_link"))).click()
@@ -106,8 +115,10 @@ for index, row in cse_df.iterrows():
 
     else:
         leclink.send_keys("NA")
-    platusd.send_keys(platform)
-    dateobj.send_keys(date)
+    if not isnan(platform):
+        platusd.send_keys(platform)
+    else:
+        platusd.send_keys("NA")
     print("Press Enter for next entry")
     wait0 = input()  # waiting for interrupt
     submit = browser.find_element_by_id('btnSubmit')
