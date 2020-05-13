@@ -16,7 +16,7 @@ def isnan(value):
         return False
 
 
-source_file_path = "E:\\Python\\BSH Online academic activity_Student Copy.csv"
+source_file_path = "Replace this text with your csv directory" #<-------------------------------
 source_df = pd.read_csv(source_file_path)
 source_df = source_df.loc[0:433,
             'Faculty Name':'Mention Google Class Code/Link/Meeting ID                          (If applicable)']
@@ -25,7 +25,7 @@ cse_df = source_df[source_df["Stream-Sec"].str.find("CSE") >= 0]
 # print(cse_df.shape)
 # print(cse_df)
 cse_df.to_csv("Filtered CSE Classes.csv")
-browser = webdriver.Chrome(executable_path=r'E:\\Python\\chromedriver.exe')
+browser = webdriver.Chrome(executable_path=r'Replace this text with your directory') #<------------------------------
 browser.set_page_load_timeout(240)
 browser.get('https://makaut1.ucanapply.com/smartexam/public/student/week-report-activity/create')
 # student=browser.find_element_by_name('STUDENT')
